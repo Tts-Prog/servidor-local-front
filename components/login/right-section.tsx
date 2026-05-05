@@ -86,7 +86,7 @@ export const RightSection = () => {
               Login
             </Button>
           </div>
-          <div>
+          <div className="flex justify-center gap-1">
             <span>Don't have an account yet? </span>
             <Link href="/registro" className="text-[#13A4EC] font-semibold">
               Create Account
