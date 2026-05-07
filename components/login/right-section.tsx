@@ -6,6 +6,9 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useState } from "react";
+import { toast } from "sonner";
+
+import { setCookie } from "nookies";
 
 export const RightSection = () => {
   // useState
@@ -32,7 +35,7 @@ export const RightSection = () => {
     e.preventDefault();
 
     // fetch API
-    await fetch("http://localhost:8080/users/login", {
+    const response = await fetch("http://localhost:8080/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,9 +44,32 @@ export const RightSection = () => {
         email: email,
         password: password,
       }),
-    }).then((response) => {
-      console.log(response.json());
     });
+
+    if (response.status === 200) {
+      toast.success("Login realizado com sucesso");
+
+      const responseData = await response.json();
+
+      console.log({ "dados recebidos ": responseData });
+
+      // salvar dados na cookies
+      setCookie(null, "token", responseData.data.token, {
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+
+      setCookie(null, "user", JSON.stringify(responseData.data.user), {
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      });
+
+      if (typeof window !== "undefined") {
+        window.location.href = "/home";
+      }
+    } else {
+      toast.error("Email ou senha incorretos");
+    }
   };
 
   console.log({ email: email, password: password });

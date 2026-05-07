@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const RightSection = () => {
   // useState
@@ -84,11 +85,11 @@ export const RightSection = () => {
     }
   };
 
-  const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleRegistro = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     // fetch API
-    await fetch("http://localhost:8080/users/create", {
+    const response = await fetch("http://localhost:8080/users/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -105,9 +106,17 @@ export const RightSection = () => {
         role: "cliente",
         enabled: true,
       }),
-    }).then((response) => {
-      console.log(response.json());
     });
+
+    if (response.status === 200) {
+      toast.success("Utilizador criado com sucesso");
+
+      if (typeof window !== "undefined") {
+        window.location.href = "/login";
+      }
+    } else {
+      toast.error("Não foi possível criar conta, tente novamente.");
+    }
   };
 
   console.log({ email: email, password: password });
@@ -136,7 +145,7 @@ export const RightSection = () => {
               <Label>Data de nascimento</Label>
               <Input
                 type="text"
-                placeholder="DD/MM/YYYY"
+                placeholder="dd-mm-aaaa"
                 className="py-2 h-10 text-lg"
                 value={dataNascimento}
                 onChange={changeDataNascimento}
@@ -210,7 +219,7 @@ export const RightSection = () => {
             </div>
 
             <Button
-              onClick={handleLogin}
+              onClick={handleRegistro}
               className="bg-[#13A4EC] rounded-md text-white font-bold py-3 drop-shadow-lg drop-shadow-gray-200"
             >
               Criar Conta
