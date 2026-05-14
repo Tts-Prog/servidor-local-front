@@ -15,6 +15,14 @@ export const RightSection = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    const response = await fetch("http://localhost:8080/users");
+  };
+
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       setEmail(e.target.value);
