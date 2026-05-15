@@ -30,12 +30,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <ApolloProvider client={client}>
-        <body className="min-h-full flex flex-col">
-          <Toaster position="top-right" richColors expand />
-          {children}
-        </body>
-      </ApolloProvider>
+      {/* <ApolloProvider client={client}> */}
+      <body className="min-h-full flex flex-col">
+        <Toaster position="top-right" richColors expand />
+        {children}
+      </body>
+      {/* </ApolloProvider> */}
     </html>
   );
 }
